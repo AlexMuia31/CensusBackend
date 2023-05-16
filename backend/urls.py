@@ -19,15 +19,18 @@ from django.urls import path, include
 
 from rest_framework import routers
 
-from main.views import CensusDataViewSet
+from main.views import CensusDataViewSet, InsuranceDataViewSet
 
-router = routers.SimpleRouter()
+router = routers.DefaultRouter()
 router.register('census', CensusDataViewSet)
+router.register('insurance', InsuranceDataViewSet)
+
 
 urlpatterns = router.urls
 
 
 urlpatterns += [
     path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls'))
+    path('api-auth/', include('rest_framework.urls')),
+
 ]

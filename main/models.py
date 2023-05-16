@@ -13,3 +13,9 @@ class Census(models.Model):
         max_length=100)
     other_race_alone = models.CharField(max_length=100)
     geo_id = models.CharField(max_length=100)
+
+
+class Insurance(models.Model):
+    age_category = models.CharField(max_length=100)
+    people_insured = models.CharField(max_length=100)
+    people_not_insured = models.CharField(max_length=100)
