@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import routers, serializers, viewsets
-from .models import Census, Insurance
+from .models import Census, Insurance, Total
 import csv
 from django.core.files.base import ContentFile
 from django.core.files.storage import FileSystemStorage
@@ -19,6 +19,12 @@ class CensusSerializer(serializers.ModelSerializer):
 class InsuranceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Insurance
+        fields = '__all__'
+
+
+class TotalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Total
         fields = '__all__'
 
 
@@ -100,3 +106,52 @@ class InsuranceDataViewSet(viewsets.ModelViewSet):
         Insurance.objects.bulk_create(insurance_list)
 
         return Response("Insurance Data updated successfully")
+
+
+class TotalDataViewSet(viewsets.ModelViewSet):
+    queryset = Total.objects.all()
+    serializer_class = TotalSerializer
+
+    @action(detail=False, methods=['POST'])
+    def upload_data(self, request):
+        file = request.FILES['file']
+        content = file.read()
+        file_content = ContentFile(content)
+        file_name = fs.save('tmp.csv', file_content)
+        tmp_file = fs.path(file_name)
+        csv_file = open(tmp_file, errors='ignore')
+        reader = csv.reader(csv_file)
+        next(reader)
+
+        total_list = []
+        for id, row in enumerate(reader):
+            (
+                total_population,
+                white_alone,
+                black_or_african_american_alone,
+                american_indian_and_alaskan_native_alone,
+                asian_alone,
+                native_hawaiian_and_other_pacific_islander_alone,
+                other_race_alone,
+                two_or_more_races,
+                other,
+                median_household_income
+            ) = row
+
+            total_list.append(
+                Total(
+                    total_population=total_population,
+                    white_alone=white_alone,
+                    black_or_african_american_alone=black_or_african_american_alone,
+                    american_indian_and_alaskan_native_alone=american_indian_and_alaskan_native_alone,
+                    asian_alone=asian_alone,
+                    native_hawaiian_and_other_pacific_islander_alone=native_hawaiian_and_other_pacific_islander_alone,
+                    other_race_alone=other_race_alone,
+                    two_or_more_races=two_or_more_races,
+                    other=other,
+                    median_household_income=median_household_income
+                )
+            )
+        Total.objects.bulk_create(total_list)
+
+        return Response("Total Data updated successfully")

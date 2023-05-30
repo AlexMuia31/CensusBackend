@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Census, Insurance
+from .models import Census, Insurance, Total
 # Register your models here.
 
 
@@ -10,3 +10,4 @@ admin.site.index_title = "Welcome to census data Portal"
 
 admin.site.register(Census)
 admin.site.register(Insurance)
+admin.site.register(Total)
