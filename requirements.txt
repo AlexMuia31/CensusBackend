@@ -6,6 +6,7 @@ django-filter==23.1
 djangorestframework==3.14.0
 importlib-metadata==6.2.0
 Markdown==3.4.3
+psycopg2-binary==2.9.6
 pycodestyle==2.10.0
 python-dotenv==1.0.0
 pytz==2023.3
