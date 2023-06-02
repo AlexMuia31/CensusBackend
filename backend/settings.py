@@ -125,8 +125,8 @@ DATABASES = {
         'NAME': 'django',
         'USER': 'alexmuia',
         'PASSWORD': '145200',
-        'HOST': 'https://pfkz60e5f7.execute-api.us-east-2.amazonaws.com/',
-        'PORT': '5432'
+        'HOST': '',
+        'PORT': ''
     }
 }
 
