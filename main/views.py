@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import routers, serializers, viewsets
-from .models import Census, Insurance, Total
+from .models import Census, Insurance, Total, Poverty
 import csv
 from django.core.files.base import ContentFile
 from django.core.files.storage import FileSystemStorage
@@ -25,6 +25,12 @@ class InsuranceSerializer(serializers.ModelSerializer):
 class TotalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Total
+        fields = '__all__'
+
+
+class PovertySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Poverty
         fields = '__all__'
 
 
@@ -155,3 +161,38 @@ class TotalDataViewSet(viewsets.ModelViewSet):
         Total.objects.bulk_create(total_list)
 
         return Response("Total Data updated successfully")
+
+
+class PovertyViewSet(viewsets.ModelViewSet):
+    queryset = Poverty.objects.all()
+    serializer_class = PovertySerializer
+
+    @action(detail=False, methods=['POST'])
+    def upload_data(self, request):
+        file = request.FILES['file']
+        content = file.read()
+        file_content = ContentFile(content)
+        file_name = fs.save('tmp.csv', file_content)
+        tmp_file = fs.path(file_name)
+        csv_file = open(tmp_file, errors='ignore')
+        reader = csv.reader(csv_file)
+        next(reader)
+
+        poverty_list = []
+        for id, row in enumerate(reader):
+            (
+                all_ages_in_poverty,
+                ages_5_to_17_in_poverty,
+                ages_0_17_in_poverty
+            ) = row
+
+            poverty_list.append(
+                Poverty(
+                    all_ages_in_poverty=all_ages_in_poverty,
+                    ages_5_to_17_in_poverty=ages_5_to_17_in_poverty,
+                    ages_0_17_in_poverty=ages_0_17_in_poverty
+                )
+            )
+        Poverty.objects.bulk_create(poverty_list)
+
+        return Response("Poverty Data updated successfully")

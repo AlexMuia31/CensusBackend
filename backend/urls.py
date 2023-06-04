@@ -19,12 +19,13 @@ from django.urls import path, include
 
 from rest_framework import routers
 
-from main.views import CensusDataViewSet, InsuranceDataViewSet, TotalDataViewSet
+from main.views import CensusDataViewSet, InsuranceDataViewSet, TotalDataViewSet, PovertyViewSet
 
 router = routers.DefaultRouter()
 router.register('census', CensusDataViewSet)
 router.register('insurance', InsuranceDataViewSet)
 router.register('total', TotalDataViewSet)
+router.register('poverty', PovertyViewSet)
 
 
 urlpatterns = router.urls

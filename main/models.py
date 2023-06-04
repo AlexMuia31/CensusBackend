@@ -33,3 +33,9 @@ class Total(models.Model):
     two_or_more_races = models.CharField(max_length=100)
     other = models.CharField(max_length=100)
     median_household_income = models.CharField(max_length=100)
+
+
+class Poverty(models.Model):
+    all_ages_in_poverty = models.CharField(max_length=100)
+    ages_5_to_17_in_poverty = models.CharField(max_length=100)
+    ages_0_17_in_poverty = models.CharField(max_length=100)
