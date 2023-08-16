@@ -34,6 +34,9 @@ class Total(models.Model):
     other = models.CharField(max_length=100)
     median_household_income = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.total_population
+
 
 class Poverty(models.Model):
     all_ages_in_poverty = models.CharField(max_length=100)
