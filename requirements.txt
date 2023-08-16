@@ -8,7 +8,6 @@ importlib-metadata==6.2.0
 Markdown==3.4.3
 psycopg2-binary==2.9.6
 pycodestyle==2.10.0
-python-dotenv==1.0.0
 pytz==2023.3
 sqlparse==0.4.3
 tomli==2.0.1
