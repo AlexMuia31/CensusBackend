@@ -160,3 +160,76 @@ class PovertyViewSet(viewsets.ModelViewSet):
         Poverty.objects.bulk_create(poverty_list)
 
         return Response("Poverty Data updated successfully")
+
+
+class PopulationBySexView(viewsets.ModelViewSet):
+    queryset = Poverty.objects.all()
+    serializer_class = PopulationBySexSerializer
+
+    @action(detail=False, methods=['POST'])
+    def upload_data(self, request):
+        file = request.FILES['file']
+        reader = process_csv(file)
+
+        pop_list = []
+        for id, row in enumerate(reader):
+            (
+                total_population,
+                under_5_years,
+                five_to_9_years,
+                ten_to_14_years,
+                fifteen_to_17_years,
+                eighteen_to_19_years,
+                Twenty_years,
+                Twenty_one_years,
+                Twenty_two_to_24,
+                Twenty_Five_to_29,
+                Thirty_to_34_years,
+                Thirty_Five_to_39,
+                Forty_to_44_years,
+                Forty_Five_to_49,
+                Fifty_to_54_years,
+                Fifty_five_to_59,
+                sixty_to_61_years,
+                sixty_two_to_64,
+                sixty_five_to_66,
+                sixty_seven_to_69,
+                seventy_to_74_years,
+                seventy_five_to_79,
+                Eighty_to_84_years,
+                Eighty_five_and_above,
+                gender
+            ) = row
+
+            pop_list.append(
+                PopulationBySex(
+                    total_population=total_population,
+                    under_5_years=under_5_years,
+                    five_to_9_years=five_to_9_years,
+                    ten_to_14_years=ten_to_14_years,
+                    fifteen_to_17_years=fifteen_to_17_years,
+                    eighteen_to_19_years=eighteen_to_19_years,
+                    Twenty_years=Twenty_years,
+                    Twenty_one_years=Twenty_one_years,
+                    Twenty_two_to_24=Twenty_two_to_24,
+                    Twenty_Five_to_29=Twenty_Five_to_29,
+                    Thirty_to_34_years=Thirty_to_34_years,
+                    Thirty_Five_to_39=Thirty_Five_to_39,
+                    Forty_to_44_years=Forty_to_44_years,
+                    Forty_Five_to_49=Forty_Five_to_49,
+                    Fifty_to_54_years=Fifty_to_54_years,
+                    Fifty_five_to_59=Fifty_five_to_59,
+                    sixty_to_61_years=sixty_to_61_years,
+                    sixty_two_to_64=sixty_two_to_64,
+                    sixty_five_to_66=sixty_five_to_66,
+                    sixty_seven_to_69=sixty_seven_to_69,
+                    seventy_to_74_years=seventy_to_74_years,
+                    seventy_five_to_79=seventy_five_to_79,
+                    Eighty_to_84_years=Eighty_to_84_years,
+                    Eighty_five_and_above=Eighty_five_and_above,
+                    gender=gender
+                )
+            )
+        Poverty.objects.bulk_create(pop_list)
+
+        return Response("Population by age Data updated successfully")

@@ -20,13 +20,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework import routers
 
-from main.views import CensusDataViewSet, InsuranceDataViewSet, TotalDataViewSet, PovertyViewSet
+from main.views import CensusDataViewSet, InsuranceDataViewSet, TotalDataViewSet, PovertyViewSet, PopulationBySexView
 
 router = routers.DefaultRouter()
 router.register('census', CensusDataViewSet)
 router.register('insurance', InsuranceDataViewSet)
 router.register('total', TotalDataViewSet)
 router.register('poverty', PovertyViewSet)
+router.register('population_category', PopulationBySexView)
 
 
 urlpatterns = router.urls
