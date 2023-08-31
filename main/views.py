@@ -1,37 +1,25 @@
 from django.shortcuts import render
-from rest_framework import routers, serializers, viewsets
-from .models import Census, Insurance, Total, Poverty
+from rest_framework import viewsets
+from .models import Census, Insurance, Total, Poverty, PopulationBySex
 import csv
 from django.core.files.base import ContentFile
 from django.core.files.storage import FileSystemStorage
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from .serializers import PopulationBySexSerializer, CensusSerializer, InsuranceSerializer, TotalSerializer, PovertySerializer
 
 fs = FileSystemStorage(location='temp/')
 
 
-class CensusSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Census
-        fields = '__all__'
-
-
-class InsuranceSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Insurance
-        fields = '__all__'
-
-
-class TotalSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Total
-        fields = '__all__'
-
-
-class PovertySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Poverty
-        fields = '__all__'
+def process_csv(file):
+    content = file.read()
+    file_content = ContentFile(content)
+    file_name = fs.save('tmp.csv', file_content)
+    tmp_file = fs.path(file_name)
+    csv_file = open(tmp_file, errors='ignore')
+    reader = csv.reader(csv_file)
+    next(reader)
+    return reader
 
 
 class CensusDataViewSet(viewsets.ModelViewSet):
@@ -41,13 +29,7 @@ class CensusDataViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['POST'])
     def upload_data(self, request):
         file = request.FILES['file']
-        content = file.read()
-        file_content = ContentFile(content)
-        file_name = fs.save('tmp.csv', file_content)
-        tmp_file = fs.path(file_name)
-        csv_file = open(tmp_file, errors='ignore')
-        reader = csv.reader(csv_file)
-        next(reader)
+        reader = process_csv(file)
 
         census_list = []
         for id, row in enumerate(reader):
@@ -86,13 +68,7 @@ class InsuranceDataViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['POST'])
     def upload_data(self, request):
         file = request.FILES['file']
-        content = file.read()
-        file_content = ContentFile(content)
-        file_name = fs.save('tmp.csv', file_content)
-        tmp_file = fs.path(file_name)
-        csv_file = open(tmp_file, errors='ignore')
-        reader = csv.reader(csv_file)
-        next(reader)
+        reader = process_csv(file)
 
         insurance_list = []
         for id, row in enumerate(reader):
@@ -121,13 +97,7 @@ class TotalDataViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['POST'])
     def upload_data(self, request):
         file = request.FILES['file']
-        content = file.read()
-        file_content = ContentFile(content)
-        file_name = fs.save('tmp.csv', file_content)
-        tmp_file = fs.path(file_name)
-        csv_file = open(tmp_file, errors='ignore')
-        reader = csv.reader(csv_file)
-        next(reader)
+        reader = process_csv(file)
 
         total_list = []
         for id, row in enumerate(reader):
@@ -170,13 +140,7 @@ class PovertyViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['POST'])
     def upload_data(self, request):
         file = request.FILES['file']
-        content = file.read()
-        file_content = ContentFile(content)
-        file_name = fs.save('tmp.csv', file_content)
-        tmp_file = fs.path(file_name)
-        csv_file = open(tmp_file, errors='ignore')
-        reader = csv.reader(csv_file)
-        next(reader)
+        reader = process_csv(file)
 
         poverty_list = []
         for id, row in enumerate(reader):

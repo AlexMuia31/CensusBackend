@@ -2,6 +2,11 @@ from django.db import models
 
 # Create your models here.
 
+choices = (
+    ('M', 'male'),
+    ('F', 'female')
+)
+
 
 class Census(models.Model):
     total_population = models.CharField(max_length=100)
@@ -36,6 +41,36 @@ class Total(models.Model):
 
     def __str__(self):
         return self.total_population
+
+
+class PopulationBySex(models.Model):
+
+    total_population = models.CharField(max_length=100)
+    under_5_years = models.CharField(max_length=100)
+    five_9_years = models.CharField(max_length=100)
+    ten_14_years = models.CharField(max_length=100)
+    fifteen_17_years = models.CharField(max_length=100)
+    eighteen_19_years = models.CharField(max_length=100)
+    Twenty_years = models.CharField(max_length=100)
+    Twenty_one_years = models.CharField(max_length=100)
+    Twenty_two_to_24 = models.CharField(max_length=100)
+    Twenty_Five_to_29 = models.CharField(max_length=100)
+    Thirty_34_years = models.CharField(max_length=100)
+    Thirty_Five_to_39 = models.CharField(max_length=100)
+    Forty_to_44_years = models.CharField(max_length=100)
+    Forty_Five_to_49 = models.CharField(max_length=100)
+    Fifty_to_54_years = models.CharField(max_length=100)
+    Fifty_five_to_59 = models.CharField(max_length=100)
+    sixty_to_61_years = models.CharField(max_length=100)
+    sixty_two_to_64 = models.CharField(max_length=100)
+    sixty_five_to_66 = models.CharField(max_length=100)
+    sixty_seven_to_69 = models.CharField(max_length=100)
+    seventy_to_74_years = models.CharField(max_length=100)
+    seventy_five_to_79 = models.CharField(max_length=100)
+    Eighty_to_84_years = models.CharField(max_length=100)
+    Eighty_five_and_above = models.CharField(max_length=100)
+    gender = models.CharField(
+        max_length=10, choices=choices, blank=True, null=True)
 
 
 class Poverty(models.Model):
