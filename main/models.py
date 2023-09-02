@@ -44,7 +44,6 @@ class Total(models.Model):
 
 
 class PopulationBySex(models.Model):
-
     total_population = models.CharField(max_length=100)
     under_5_years = models.CharField(max_length=100)
     five_to_9_years = models.CharField(max_length=100)
@@ -70,7 +69,7 @@ class PopulationBySex(models.Model):
     Eighty_to_84_years = models.CharField(max_length=100)
     Eighty_five_and_above = models.CharField(max_length=100)
     gender = models.CharField(
-        max_length=10, choices=choices, blank=True, null=True)
+        max_length=2, choices=choices, null=True, blank=True)
 
 
 class Poverty(models.Model):

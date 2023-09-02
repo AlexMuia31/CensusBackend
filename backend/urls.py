@@ -26,7 +26,7 @@ router = routers.DefaultRouter()
 router.register('census', CensusDataViewSet)
 router.register('insurance', InsuranceDataViewSet)
 router.register('total', TotalDataViewSet)
-router.register('poverty', PovertyViewSet)
+# router.register('poverty', PovertyViewSet)
 router.register('population_category', PopulationBySexView)
 
 

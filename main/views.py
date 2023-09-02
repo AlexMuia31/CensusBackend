@@ -6,7 +6,7 @@ from django.core.files.base import ContentFile
 from django.core.files.storage import FileSystemStorage
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .serializers import PopulationBySexSerializer, CensusSerializer, InsuranceSerializer, TotalSerializer, PovertySerializer
+from .serializers import CensusSerializer, InsuranceSerializer, TotalSerializer, PovertySerializer, PopulationBySexSerializer
 
 fs = FileSystemStorage(location='temp/')
 
@@ -163,7 +163,7 @@ class PovertyViewSet(viewsets.ModelViewSet):
 
 
 class PopulationBySexView(viewsets.ModelViewSet):
-    queryset = Poverty.objects.all()
+    queryset = PopulationBySex.objects.all()
     serializer_class = PopulationBySexSerializer
 
     @action(detail=False, methods=['POST'])
@@ -198,7 +198,7 @@ class PopulationBySexView(viewsets.ModelViewSet):
                 seventy_five_to_79,
                 Eighty_to_84_years,
                 Eighty_five_and_above,
-                gender
+
             ) = row
 
             pop_list.append(
@@ -227,9 +227,9 @@ class PopulationBySexView(viewsets.ModelViewSet):
                     seventy_five_to_79=seventy_five_to_79,
                     Eighty_to_84_years=Eighty_to_84_years,
                     Eighty_five_and_above=Eighty_five_and_above,
-                    gender=gender
+
                 )
             )
-        Poverty.objects.bulk_create(pop_list)
+        PopulationBySex.objects.bulk_create(pop_list)
 
         return Response("Population by age Data updated successfully")
