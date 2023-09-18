@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from .models import Census, Insurance, Total, Poverty, PopulationBySex
+from .models import Census, Insurance, Total, Poverty, PopulationBySex,MedianIncome
 import csv
 from django.core.files.base import ContentFile
 from django.core.files.storage import FileSystemStorage
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .serializers import CensusSerializer, InsuranceSerializer, TotalSerializer, PovertySerializer, PopulationBySexSerializer
+from .serializers import CensusSerializer, InsuranceSerializer, TotalSerializer, PovertySerializer, PopulationBySexSerializer,MedianIncomeSerializer
 
 fs = FileSystemStorage(location='temp/')
 
@@ -233,3 +233,42 @@ class PopulationBySexView(viewsets.ModelViewSet):
         PopulationBySex.objects.bulk_create(pop_list)
 
         return Response("Population by age Data updated successfully")
+
+
+class MedianIncomeView(viewsets.ModelViewSet):
+    queryset = MedianIncome.objects.all()
+    serializer_class = MedianIncomeSerializer
+
+    @action(detail=False, methods=['POST'])
+    def upload_data(self, request):
+        file = request.FILES['file']
+        reader = process_csv(file)
+
+        pop_list = []
+        for id, row in enumerate(reader):
+            (
+                Median_Income,
+                White_Alone,
+                Black_or_African_American,
+                American_Indian_and_Alaska_Native_Alone,
+                Asian_Alone,
+                Two_or_more_races,
+                Some_other_race_alone,
+                Hispanic_or_Latino,
+            ) = row
+
+            pop_list.append(
+                MedianIncome(
+                    Median_Income=Median_Income,
+                    White_Alone =White_Alone,
+                    Black_or_African_American= Black_or_African_American,
+                    American_Indian_and_Alaska_Native_Alone =American_Indian_and_Alaska_Native_Alone,
+                    Asian_Alone= Asian_Alone,
+                    Two_or_more_races = Two_or_more_races,
+                    Some_other_race_alone = Some_other_race_alone,
+                    Hispanic_or_Latino = Hispanic_or_Latino
+                )
+            )
+        MedianIncome.objects.bulk_create(pop_list)
+
+        return Response("Median Income Data updated successfully")
