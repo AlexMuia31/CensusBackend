@@ -76,3 +76,14 @@ class Poverty(models.Model):
     all_ages_in_poverty = models.CharField(max_length=100)
     ages_5_to_17_in_poverty = models.CharField(max_length=100)
     ages_0_17_in_poverty = models.CharField(max_length=100)
+
+
+class MedianIncome(models.Model):
+    Median_Income = models.CharField(max_length=100)
+    White_Alone = models.CharField(max_length=100)
+    Black_or_African_American = models.CharField(max_length=100)
+    American_Indian_and_Alaska_Native_Alone = models.CharField(max_length=100)
+    Asian_Alone = models.CharField(max_length=100)
+    Two_or_more_races = models.CharField(max_length=100)
+    Some_other_race_alone = models.CharField(max_length=100)
+    Hispanic_or_Latino = models.CharField(max_length=100)

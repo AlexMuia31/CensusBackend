@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Census, Insurance, Total, Poverty, PopulationBySex
+from .models import Census, Insurance, Total, Poverty, PopulationBySex,MedianIncome
 # Register your models here.
 
 
@@ -13,3 +13,4 @@ admin.site.register(Insurance)
 admin.site.register(Total)
 admin.site.register(Poverty)
 admin.site.register(PopulationBySex)
+admin.site.register(MedianIncome)

@@ -1,5 +1,11 @@
-from .models import Census, Insurance, Total, Poverty, PopulationBySex
-from rest_framework import routers, serializers, viewsets
+from .models import Census, Insurance, Total, Poverty, PopulationBySex,MedianIncome
+from rest_framework import  serializers
+
+
+class MedianIncomeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model =MedianIncome
+        fields = '__all__'
 
 
 class PopulationBySexSerializer(serializers.ModelSerializer):
